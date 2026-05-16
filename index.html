@@ -90,11 +90,11 @@
     }
 
     .nav-inner {
-      min-height: 68px;
+      min-height: 52px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 18px;
+      justify-content: flex-start;
+      gap: 14px;
     }
 
     .brand {
@@ -107,42 +107,48 @@
     }
 
     .brand-mark {
-      width: 34px;
-      height: 34px;
+      width: 30px;
+      height: 30px;
       display: grid;
       place-items: center;
       border: 1px solid var(--red-border);
-      border-radius: 11px;
+      border-radius: 10px;
       background: linear-gradient(135deg, var(--red-soft), rgba(255,255,255,0.03));
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.24);
+      box-shadow: 0 0 18px rgba(255, 0, 0, 0.22);
       color: var(--red);
     }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+    .floating-lang {
+      position: fixed;
+      top: calc(10px + env(safe-area-inset-top));
+      right: calc(12px + env(safe-area-inset-right));
+      z-index: 50;
     }
 
-    .nav-links a,
     .lang-btn {
-      border: 1px solid transparent;
+      min-width: 44px;
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--red-border);
       border-radius: 999px;
-      color: var(--muted);
-      padding: 9px 12px;
-      font-size: 13px;
-      background: transparent;
+      color: #fff;
+      padding: 0 12px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      background: rgba(16, 0, 0, 0.74);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.18);
       transition: 180ms ease;
       cursor: pointer;
     }
 
-    .nav-links a:hover,
     .lang-btn:hover {
-      color: #fff;
-      border-color: var(--red-border);
-      background: var(--red-soft);
+      border-color: rgba(255, 90, 90, 0.86);
+      background: rgba(255, 0, 0, 0.20);
+      transform: translateY(-1px);
     }
 
     .hero {
@@ -267,7 +273,11 @@
     }
 
     .profile-card,
-    .device-card {
+    .device-card,
+    .focus-card,
+    .main-project,
+    .project-card,
+    .contact-card {
       position: relative;
       overflow: hidden;
       border: 1px solid var(--red-border);
@@ -276,11 +286,16 @@
         linear-gradient(135deg, rgba(255, 0, 0, 0.18), rgba(255,255,255,0.025)),
         var(--card);
       box-shadow: var(--shadow);
+    }
+
+    .profile-card,
+    .device-card {
       padding: 24px;
     }
 
     .profile-card::before,
-    .device-card::before {
+    .device-card::before,
+    .main-project::before {
       content: "";
       position: absolute;
       inset: -1px;
@@ -328,10 +343,28 @@
       margin: 0 0 6px;
     }
 
-    .profile-sub {
+    .profile-sub,
+    .api-status {
       color: var(--muted);
       margin: 0;
       line-height: 1.45;
+    }
+
+    .api-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    .api-status::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 12px rgba(255,0,0,0.55);
     }
 
     .stats {
@@ -491,7 +524,7 @@
     }
 
     section {
-      padding: clamp(42px, 5vw, 72px) 0 clamp(70px, 7vw, 104px);
+      padding: clamp(42px, 5vw, 72px) 0;
     }
 
     .section-head {
@@ -525,6 +558,96 @@
       line-height: 1.55;
     }
 
+    .focus-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .focus-card {
+      min-height: 152px;
+      padding: 20px;
+      border-color: var(--line);
+      box-shadow: 0 16px 44px rgba(0,0,0,0.22);
+      background:
+        linear-gradient(145deg, rgba(255, 0, 0, 0.10), rgba(255,255,255,0.025) 46%, rgba(0,0,0,0.16)),
+        var(--card);
+    }
+
+    .focus-card b {
+      display: block;
+      font-size: 18px;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+    }
+
+    .focus-card span {
+      display: block;
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.48;
+      font-size: 14px;
+    }
+
+    .main-project {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 24px;
+      padding: clamp(22px, 3.2vw, 34px);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,0,0,0.30), transparent 32%),
+        linear-gradient(135deg, rgba(255,0,0,0.18), rgba(255,255,255,0.035)),
+        var(--card-strong);
+    }
+
+    .main-project > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .main-project h2 {
+      font-size: clamp(42px, 5.5vw, 76px);
+    }
+
+    .project-note {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.58;
+      max-width: 760px;
+    }
+
+    .project-panel {
+      display: grid;
+      align-content: start;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(0,0,0,0.28);
+      padding: 18px;
+    }
+
+    .panel-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 11px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .panel-row b {
+      color: #fff;
+      font-size: 15px;
+      text-align: right;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -535,15 +658,12 @@
       display: flex;
       flex-direction: column;
       min-height: 292px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-color: var(--line);
       background:
         linear-gradient(145deg, rgba(255, 0, 0, 0.095), rgba(255,255,255,0.025) 45%, rgba(0,0,0,0.18)),
         var(--card);
       box-shadow: 0 16px 52px rgba(0,0,0,0.28);
       padding: 22px;
-      overflow: hidden;
-      position: relative;
       transition: 180ms ease;
     }
 
@@ -566,7 +686,9 @@
       opacity: 0.78;
     }
 
-    .project-card:hover {
+    .project-card:hover,
+    .focus-card:hover,
+    .contact-card:hover {
       transform: translateY(-4px);
       border-color: var(--red-border);
       box-shadow: var(--shadow);
@@ -646,6 +768,24 @@
       background: var(--red);
     }
 
+    .contact-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px;
+      border-color: var(--line);
+      background:
+        linear-gradient(145deg, rgba(255, 0, 0, 0.10), rgba(255,255,255,0.025) 50%, rgba(0,0,0,0.18)),
+        var(--card);
+    }
+
+    .contact-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
     .dots {
       position: absolute;
       bottom: 8px;
@@ -703,18 +843,24 @@
         grid-template-columns: minmax(0, 1fr) 500px;
       }
 
-      .grid {
+      .grid,
+      .focus-grid {
         gap: 20px;
       }
     }
 
     @media (max-width: 1040px) {
-      .hero-grid {
+      .hero-grid,
+      .main-project {
         grid-template-columns: 1fr;
       }
 
       .side-stack {
         order: -1;
+      }
+
+      .focus-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -724,14 +870,15 @@
       }
 
       .nav-inner {
-        min-height: auto;
-        padding: 12px 0;
-        align-items: flex-start;
-        flex-direction: column;
+        min-height: 50px;
+        padding: 8px 0;
+        align-items: center;
+        flex-direction: row;
       }
 
-      .nav-links {
-        justify-content: flex-start;
+      .floating-lang {
+        top: calc(8px + env(safe-area-inset-top));
+        right: calc(10px + env(safe-area-inset-right));
       }
 
       .hero {
@@ -744,7 +891,10 @@
 
       .profile-card,
       .device-card,
-      .project-card {
+      .project-card,
+      .focus-card,
+      .main-project,
+      .contact-card {
         border-radius: 20px;
       }
 
@@ -755,7 +905,8 @@
       }
 
       .stats,
-      .grid {
+      .grid,
+      .focus-grid {
         grid-template-columns: 1fr;
       }
 
@@ -763,12 +914,14 @@
         grid-template-columns: 1fr;
       }
 
-      .section-head {
+      .section-head,
+      .contact-card {
         align-items: flex-start;
         flex-direction: column;
       }
 
-      .actions .btn {
+      .actions .btn,
+      .contact-card .btn {
         width: 100%;
       }
     }
@@ -802,14 +955,12 @@
           <span class="brand-mark">⌁</span>
           <span>GAME-OVER-op</span>
         </a>
-        <div class="nav-links" aria-label="Navigation">
-          <a href="#device" data-i18n="navDevice">Устройство</a>
-          <a href="#projects" data-i18n="navProjects">Проекты</a>
-          <a href="https://github.com/GAME-OVER-op" target="_blank" rel="noopener">GitHub</a>
-          <button class="lang-btn" type="button" id="langToggle">EN</button>
-        </div>
       </div>
     </nav>
+
+    <div class="floating-lang" aria-label="Site language">
+      <button class="lang-btn" type="button" id="langToggle">EN</button>
+    </div>
 
     <main id="top">
       <header class="hero">
@@ -820,7 +971,7 @@
             <p class="lead" data-i18n="lead">Инструменты для Android, root-среды, сетевой маршрутизации, защиты и системной оптимизации.</p>
             <div class="focus-strip" aria-label="Project directions">
               <span>Root Android</span>
-              <span>Network tools</span>
+              <span>Network routing</span>
               <span>DPI bypass</span>
               <span>Open source</span>
             </div>
@@ -834,24 +985,23 @@
           <div class="side-stack">
             <aside class="profile-card reveal" aria-label="GitHub profile card">
               <div class="avatar-wrap">
-                <img class="avatar" src="https://github.com/GAME-OVER-op.png" alt="GAME-OVER-op GitHub avatar" loading="lazy" />
+                <img class="avatar" id="profileAvatar" src="https://github.com/GAME-OVER-op.png" alt="GAME-OVER-op GitHub avatar" loading="lazy" />
                 <div>
                   <p class="profile-name">GAME-OVER-op</p>
                   <p class="profile-sub" data-i18n="profileSub">Network security • DPI bypass • Android tools</p>
+                  <p class="api-status" id="apiStatus" data-i18n="apiLoading">Загрузка данных GitHub</p>
                 </div>
               </div>
               <div class="stats">
-                <div class="stat"><b>12</b><span data-i18n="reposLabel">репозиториев</span></div>
-                <div class="stat"><b>24</b><span data-i18n="followersLabel">подписчика</span></div>
-                <div class="stat"><b>12</b><span data-i18n="starsLabel">звёздных списков</span></div>
+                <div class="stat"><b id="profileRepos">—</b><span data-i18n="reposLabel">репозиториев</span></div>
+                <div class="stat"><b id="profileFollowers">—</b><span data-i18n="followersLabel">подписчиков</span></div>
+                <div class="stat"><b id="profileStars">—</b><span data-i18n="starsLabel">звёзд</span></div>
               </div>
-              <div class="tech-list" aria-label="Tech stack">
+              <div class="tech-list" id="techList" aria-label="Tech stack">
                 <span class="chip">Kotlin</span>
                 <span class="chip">Rust</span>
                 <span class="chip">JavaScript</span>
                 <span class="chip">Shell</span>
-                <span class="chip">HTML</span>
-                <span class="chip">C++</span>
               </div>
             </aside>
 
@@ -862,12 +1012,14 @@
               </div>
               <div class="device-body">
                 <h2 class="device-name">Red Magic 9 Pro</h2>
-                <p class="device-sub" data-i18n="deviceSub">Устройство, на котором создаются и тестируются проекты. Конфигурация: 16 / 512.</p>
+                <p class="device-sub" data-i18n="deviceSub">Рабочее устройство для сборки, проверки и тестов проектов. Конфигурация: 16 / 512, LineageOS.</p>
                 <div class="device-specs">
                   <div class="device-spec"><b>Snapdragon 8 Gen 3</b><span>Qualcomm SoC</span></div>
+                  <div class="device-spec"><b>Adreno 750</b><span data-i18n="deviceGpu">графика</span></div>
                   <div class="device-spec"><b>16 GB LPDDR5X</b><span data-i18n="deviceRam">оперативная память</span></div>
                   <div class="device-spec"><b>512 GB UFS 4.0</b><span data-i18n="deviceStorage">накопитель</span></div>
-                  <div class="device-spec"><b>Adreno GPU</b><span data-i18n="deviceGpu">графика</span></div>
+                  <div class="device-spec"><b>LineageOS</b><span data-i18n="deviceFirmware">прошивка</span></div>
+                  <div class="device-spec"><b>Android root</b><span data-i18n="deviceRoot">тестовая среда</span></div>
                 </div>
                 <a class="image-source" href="https://www.qualcomm.com/smartphones/products/8-series/snapdragon-8-gen-3-mobile-platform" target="_blank" rel="noopener" data-i18n="qcomSource">Изображение чипа: Qualcomm</a>
               </div>
@@ -877,115 +1029,255 @@
         <div class="dots"><span>.</span><span>.</span><span>.</span></div>
       </header>
 
+      <section id="focus">
+        <div class="shell">
+          <div class="section-head reveal">
+            <div>
+              <p class="section-kicker" data-i18n="focusKicker">Focus areas</p>
+              <h2 data-i18n="focusTitle">Направления</h2>
+            </div>
+            <p class="section-text" data-i18n="focusText">Коротко о том, вокруг чего строятся проекты.</p>
+          </div>
+          <div class="focus-grid" id="focusGrid"></div>
+        </div>
+      </section>
+
+      <section id="main-project">
+        <div class="shell">
+          <article class="main-project reveal">
+            <div>
+              <p class="section-kicker" data-i18n="mainKicker">Main project</p>
+              <h2>ZDT-D</h2>
+              <p class="project-note" data-i18n="mainText">Root-based Android network platform for routing, DNS control, proxy chains and per-app network management.</p>
+              <div class="actions">
+                <a class="btn primary" href="https://github.com/GAME-OVER-op/ZDT-D" target="_blank" rel="noopener" data-i18n="openRepo">Открыть репозиторий</a>
+                <a class="btn" href="https://github.com/GAME-OVER-op/ZDT-D/releases" target="_blank" rel="noopener" data-i18n="releasesBtn">Релизы</a>
+              </div>
+            </div>
+            <div class="project-panel" aria-label="ZDT-D live stats">
+              <div class="panel-row"><span data-i18n="languageLabel">Язык</span><b id="zdtLang">—</b></div>
+              <div class="panel-row"><span data-i18n="starsCountLabel">Звёзды</span><b id="zdtStars">—</b></div>
+              <div class="panel-row"><span data-i18n="forksLabel">Форки</span><b id="zdtForks">—</b></div>
+              <div class="panel-row"><span data-i18n="updatedLabel">Обновлено</span><b id="zdtUpdated">—</b></div>
+              <div class="panel-row"><span data-i18n="licenseLabel">Лицензия</span><b id="zdtLicense">—</b></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <section id="projects">
         <div class="shell">
           <div class="section-head reveal">
             <div>
-              <p class="section-kicker" data-i18n="projectsKicker">Repository map</p>
+              <p class="section-kicker" data-i18n="projectsKicker">Repositories</p>
               <h2 data-i18n="projectsTitle">Проекты</h2>
             </div>
-            <p class="section-text" data-i18n="projectsText">Основные проекты без лишних блоков: ZDT-D, PortGuard, Discord Android-плагин и Rust daemon.</p>
+            <p class="section-text" data-i18n="projectsText">Выбранные публичные репозитории. Статистика обновляется через GitHub при открытии страницы.</p>
           </div>
           <div class="grid" id="projectGrid"></div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="shell">
+          <article class="contact-card reveal">
+            <div>
+              <p class="section-kicker" data-i18n="contactKicker">Contact</p>
+              <h2 data-i18n="contactTitle">Связь</h2>
+              <p data-i18n="contactText">GitHub для кода, Telegram для быстрых сообщений.</p>
+            </div>
+            <div class="actions">
+              <a class="btn primary" href="https://github.com/GAME-OVER-op" target="_blank" rel="noopener">GitHub</a>
+              <a class="btn" href="https://t.me/GAME_OVER_op" target="_blank" rel="noopener">Telegram</a>
+            </div>
+          </article>
         </div>
       </section>
     </main>
   </div>
 
   <script>
+    const GITHUB_USER = "GAME-OVER-op";
+    const API_BASE = "https://api.github.com";
+
     const translations = {
       ru: {
-        navDevice: "Устройство",
-        navProjects: "Проекты",
         eyebrow: "Android root tooling",
         lead: "Инструменты для Android, root-среды, сетевой маршрутизации, защиты и системной оптимизации.",
         githubBtn: "GitHub профиль",
         telegramBtn: "Telegram",
         projectsBtn: "Смотреть проекты",
         profileSub: "Network security • DPI bypass • Android tools",
+        apiLoading: "Загрузка данных GitHub",
+        apiReady: "Данные загружены с GitHub",
+        apiOffline: "GitHub API временно недоступен",
         reposLabel: "репозиториев",
-        followersLabel: "подписчика",
-        starsLabel: "звёздных списков",
+        followersLabel: "подписчиков",
+        starsLabel: "звёзд",
         deviceLabel: "Project device",
-        deviceSub: "Устройство, на котором создаются и тестируются проекты. Конфигурация: 16 / 512.",
+        deviceSub: "Рабочее устройство для сборки, проверки и тестов проектов. Конфигурация: 16 / 512, LineageOS.",
         deviceRam: "оперативная память",
         deviceStorage: "накопитель",
         deviceGpu: "графика",
+        deviceFirmware: "прошивка",
+        deviceRoot: "тестовая среда",
         qcomSource: "Изображение чипа: Qualcomm",
-        projectsKicker: "Repository map",
+        focusKicker: "Focus areas",
+        focusTitle: "Направления",
+        focusText: "Коротко о том, вокруг чего строятся проекты.",
+        mainKicker: "Main project",
+        mainText: "Root-based Android network platform for routing, DNS control, proxy chains and per-app network management.",
+        releasesBtn: "Релизы",
+        languageLabel: "Язык",
+        starsCountLabel: "Звёзды",
+        forksLabel: "Форки",
+        updatedLabel: "Обновлено",
+        licenseLabel: "Лицензия",
+        projectsKicker: "Repositories",
         projectsTitle: "Проекты",
-        projectsText: "Основные проекты без лишних блоков: ZDT-D, PortGuard, Discord Android-плагин и Rust daemon.",
-        openRepo: "Открыть репозиторий"
+        projectsText: "Выбранные публичные репозитории. Статистика обновляется через GitHub при открытии страницы.",
+        openRepo: "Открыть репозиторий",
+        contactKicker: "Contact",
+        contactTitle: "Связь",
+        contactText: "GitHub для кода, Telegram для быстрых сообщений.",
+        starsShort: "звёзд",
+        forksShort: "форков",
+        updatedShort: "обновлено",
+        loading: "загрузка"
       },
       en: {
-        navDevice: "Device",
-        navProjects: "Projects",
         eyebrow: "Android root tooling",
         lead: "Tools for Android, root environments, network routing, protection and system optimization.",
         githubBtn: "GitHub profile",
         telegramBtn: "Telegram",
         projectsBtn: "View projects",
         profileSub: "Network security • DPI bypass • Android tools",
+        apiLoading: "Loading GitHub data",
+        apiReady: "Data loaded from GitHub",
+        apiOffline: "GitHub API is temporarily unavailable",
         reposLabel: "repositories",
         followersLabel: "followers",
-        starsLabel: "starred lists",
+        starsLabel: "stars",
         deviceLabel: "Project device",
-        deviceSub: "The device used to build and test projects. Configuration: 16 / 512.",
+        deviceSub: "The device used to build, check and test projects. Configuration: 16 / 512, LineageOS.",
         deviceRam: "memory",
         deviceStorage: "storage",
         deviceGpu: "graphics",
+        deviceFirmware: "firmware",
+        deviceRoot: "test environment",
         qcomSource: "Chip image: Qualcomm",
-        projectsKicker: "Repository map",
+        focusKicker: "Focus areas",
+        focusTitle: "Focus areas",
+        focusText: "The main directions behind the projects.",
+        mainKicker: "Main project",
+        mainText: "Root-based Android network platform for routing, DNS control, proxy chains and per-app network management.",
+        releasesBtn: "Releases",
+        languageLabel: "Language",
+        starsCountLabel: "Stars",
+        forksLabel: "Forks",
+        updatedLabel: "Updated",
+        licenseLabel: "License",
+        projectsKicker: "Repositories",
         projectsTitle: "Projects",
-        projectsText: "Core projects without extra blocks: ZDT-D, PortGuard, a Discord Android plugin and a Rust daemon.",
-        openRepo: "Open repository"
+        projectsText: "Selected public repositories. Stats are updated from GitHub when the page opens.",
+        openRepo: "Open repository",
+        contactKicker: "Contact",
+        contactTitle: "Contact",
+        contactText: "GitHub for code, Telegram for quick messages.",
+        starsShort: "stars",
+        forksShort: "forks",
+        updatedShort: "updated",
+        loading: "loading"
       }
     };
 
+    const focusAreas = [
+      {
+        title: "Android root",
+        text: {
+          ru: "Root-модули, системные сервисы и интеграция с Android-средой.",
+          en: "Root modules, system services and Android environment integration."
+        }
+      },
+      {
+        title: "Network routing",
+        text: {
+          ru: "Маршрутизация трафика, DNS, порты и управление сетевыми цепочками.",
+          en: "Traffic routing, DNS, ports and network chain management."
+        }
+      },
+      {
+        title: "DPI bypass",
+        text: {
+          ru: "Инструменты для обхода сетевых ограничений и гибкой обработки трафика.",
+          en: "Tools for bypassing network restrictions and flexible traffic handling."
+        }
+      },
+      {
+        title: "Proxy tools",
+        text: {
+          ru: "Работа с локальными прокси, профилями и связками сетевых компонентов.",
+          en: "Local proxies, profiles and network component pipelines."
+        }
+      },
+      {
+        title: "Magisk modules",
+        text: {
+          ru: "Модульная логика для root-устройств и Android-сборок.",
+          en: "Modular logic for rooted devices and Android builds."
+        }
+      },
+      {
+        title: "Rust daemons",
+        text: {
+          ru: "Низкоуровневые демоны для производительности и системной автоматизации.",
+          en: "Low-level daemons for performance and system automation."
+        }
+      }
+    ];
+
     const projects = [
       {
-        name: "ZDT-D",
+        repo: "ZDT-D",
         badge: { ru: "Main", en: "Main" },
         description: {
-          ru: "Основной проект для Android: root-сетевая платформа, маршрутизация, DNS, proxy pipeline и управление сетевым поведением приложений.",
-          en: "Main Android project: root-based network platform, routing, DNS, proxy pipeline and per-app network behavior control."
+          ru: "Root-сетевая платформа для Android: маршрутизация, DNS, proxy-цепочки и управление трафиком приложений.",
+          en: "Root network platform for Android: routing, DNS, proxy chains and per-app traffic control."
         },
-        meta: ["Kotlin", "188★", "GPL-3.0", "Android"],
-        url: "https://github.com/GAME-OVER-op/ZDT-D"
+        fallback: ["Kotlin", "Android", "Root"]
       },
       {
-        name: "PortGuard",
+        repo: "PortGuard",
         badge: { ru: "Network", en: "Network" },
         description: {
-          ru: "Android/Kotlin проект из сетевого направления. Хорошая карточка для портфолио рядом с ZDT-D.",
-          en: "Android/Kotlin project from the networking direction. A strong companion card next to ZDT-D."
+          ru: "Android-инструмент для работы с сетевыми портами и контроля сетевой активности.",
+          en: "Android tool for port handling and network activity control."
         },
-        meta: ["Kotlin", "45★", "Android"],
-        url: "https://github.com/GAME-OVER-op/PortGuard"
+        fallback: ["Kotlin", "Android", "Network"]
       },
       {
-        name: "revenge-high-quality-screenshare",
-        badge: { ru: "New", en: "New" },
+        repo: "revenge-high-quality-screenshare",
+        badge: { ru: "Plugin", en: "Plugin" },
         description: {
           ru: "Плагин выбора высокого качества демонстрации экрана для Revenge / Vendetta / Bunny на Discord Android.",
           en: "High quality screen-share selector plugin for Revenge / Vendetta / Bunny on Discord Android."
         },
-        meta: ["JavaScript", "Discord Android", "Plugin"],
-        url: "https://github.com/GAME-OVER-op/revenge-high-quality-screenshare"
+        fallback: ["JavaScript", "Discord Android", "Plugin"]
       },
       {
-        name: "mora-perf-daemon",
+        repo: "mora-perf-daemon",
         badge: { ru: "Daemon", en: "Daemon" },
         description: {
-          ru: "Rust daemon для LineageOS на Red Magic 9 Pro: CPU/GPU caps, fan control, thermal/performance logic и уведомления.",
-          en: "Rust daemon for LineageOS on Red Magic 9 Pro: CPU/GPU caps, fan control, thermal/performance logic and notifications."
+          ru: "Rust daemon для LineageOS на Red Magic 9 Pro: лимиты CPU/GPU, вентилятор и логика производительности.",
+          en: "Rust daemon for LineageOS on Red Magic 9 Pro: CPU/GPU caps, fan control and performance logic."
         },
-        meta: ["Rust", "10★", "MIT", "Performance"],
-        url: "https://github.com/GAME-OVER-op/mora-perf-daemon"
+        fallback: ["Rust", "LineageOS", "Performance"]
       }
     ];
 
     let currentLang = (navigator.language || "ru").toLowerCase().startsWith("en") ? "en" : "ru";
+    let repoMap = new Map();
+    let allRepos = [];
 
     function applyLanguage(lang) {
       currentLang = lang;
@@ -996,7 +1288,58 @@
         if (translations[lang][key]) el.textContent = translations[lang][key];
       });
       document.getElementById("langToggle").textContent = lang === "ru" ? "EN" : "RU";
+      renderFocusAreas();
       renderProjects();
+      renderMainProject();
+      updateApiStatus(repoMap.size ? "apiReady" : "apiLoading");
+    }
+
+    function formatNumber(value) {
+      if (typeof value !== "number") return "—";
+      return new Intl.NumberFormat(currentLang === "ru" ? "ru-RU" : "en-US").format(value);
+    }
+
+    function formatDate(value) {
+      if (!value) return "—";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "—";
+      return new Intl.DateTimeFormat(currentLang === "ru" ? "ru-RU" : "en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+      }).format(date);
+    }
+
+    function updateApiStatus(key) {
+      const el = document.getElementById("apiStatus");
+      el.textContent = translations[currentLang][key] || translations[currentLang].apiLoading;
+    }
+
+    function renderFocusAreas() {
+      const grid = document.getElementById("focusGrid");
+      grid.innerHTML = focusAreas.map((item) => `
+        <article class="focus-card reveal">
+          <b>${item.title}</b>
+          <span>${item.text[currentLang]}</span>
+        </article>
+      `).join("");
+      observeReveal();
+    }
+
+    function projectUrl(name) {
+      return `https://github.com/${GITHUB_USER}/${name}`;
+    }
+
+    function repoMeta(project) {
+      const repo = repoMap.get(project.repo.toLowerCase());
+      if (!repo) return project.fallback;
+      const meta = [];
+      if (repo.language) meta.push(repo.language);
+      meta.push(`${formatNumber(repo.stargazers_count)} ${translations[currentLang].starsShort}`);
+      meta.push(`${formatNumber(repo.forks_count)} ${translations[currentLang].forksShort}`);
+      meta.push(`${translations[currentLang].updatedShort}: ${formatDate(repo.pushed_at || repo.updated_at)}`);
+      if (repo.license && repo.license.spdx_id) meta.push(repo.license.spdx_id);
+      return meta;
     }
 
     function renderProjects() {
@@ -1006,15 +1349,63 @@
           <div class="card-top">
             <span class="badge">${project.badge[currentLang]}</span>
           </div>
-          <h3 class="repo-name">${project.name}</h3>
+          <h3 class="repo-name">${project.repo}</h3>
           <p class="repo-desc">${project.description[currentLang]}</p>
           <div class="repo-meta">
-            ${project.meta.map((item) => `<span class="meta-pill">${item}</span>`).join("")}
+            ${repoMeta(project).map((item) => `<span class="meta-pill">${item}</span>`).join("")}
           </div>
-          <a class="card-link" href="${project.url}" target="_blank" rel="noopener">${translations[currentLang].openRepo}</a>
+          <a class="card-link" href="${projectUrl(project.repo)}" target="_blank" rel="noopener">${translations[currentLang].openRepo}</a>
         </article>
       `).join("");
       observeReveal();
+    }
+
+    function renderMainProject() {
+      const repo = repoMap.get("zdt-d");
+      document.getElementById("zdtLang").textContent = repo?.language || "Kotlin";
+      document.getElementById("zdtStars").textContent = repo ? formatNumber(repo.stargazers_count) : "—";
+      document.getElementById("zdtForks").textContent = repo ? formatNumber(repo.forks_count) : "—";
+      document.getElementById("zdtUpdated").textContent = repo ? formatDate(repo.pushed_at || repo.updated_at) : "—";
+      document.getElementById("zdtLicense").textContent = repo?.license?.spdx_id || "—";
+    }
+
+    function renderLanguages() {
+      const techList = document.getElementById("techList");
+      const languages = [...new Set(allRepos.map((repo) => repo.language).filter(Boolean))].slice(0, 6);
+      const fallback = ["Kotlin", "Rust", "JavaScript", "Shell"];
+      techList.innerHTML = (languages.length ? languages : fallback).map((name) => `<span class="chip">${name}</span>`).join("");
+    }
+
+    async function loadGitHubData() {
+      try {
+        updateApiStatus("apiLoading");
+        const [userResponse, reposResponse] = await Promise.all([
+          fetch(`${API_BASE}/users/${GITHUB_USER}`, { headers: { Accept: "application/vnd.github+json" } }),
+          fetch(`${API_BASE}/users/${GITHUB_USER}/repos?per_page=100&sort=updated`, { headers: { Accept: "application/vnd.github+json" } })
+        ]);
+
+        if (!userResponse.ok || !reposResponse.ok) throw new Error("GitHub API request failed");
+
+        const profile = await userResponse.json();
+        allRepos = await reposResponse.json();
+        repoMap = new Map(allRepos.map((repo) => [repo.name.toLowerCase(), repo]));
+
+        const totalStars = allRepos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0);
+
+        document.getElementById("profileAvatar").src = profile.avatar_url || "https://github.com/GAME-OVER-op.png";
+        document.getElementById("profileRepos").textContent = formatNumber(profile.public_repos);
+        document.getElementById("profileFollowers").textContent = formatNumber(profile.followers);
+        document.getElementById("profileStars").textContent = formatNumber(totalStars);
+
+        renderLanguages();
+        renderProjects();
+        renderMainProject();
+        updateApiStatus("apiReady");
+      } catch (error) {
+        updateApiStatus("apiOffline");
+        renderProjects();
+        renderMainProject();
+      }
     }
 
     function observeReveal() {
@@ -1035,6 +1426,7 @@
     });
 
     applyLanguage(currentLang);
+    loadGitHubData();
     observeReveal();
   </script>
 </body>
