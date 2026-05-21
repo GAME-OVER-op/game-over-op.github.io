@@ -25,6 +25,8 @@
 
     * { box-sizing: border-box; }
 
+    img, video { max-width: 100%; display: block; }
+
     html {
       scroll-behavior: smooth;
       background: var(--bg);
@@ -86,7 +88,7 @@
       z-index: 20;
       backdrop-filter: blur(18px);
       background: rgba(0, 0, 0, 0.62);
-      border-bottom: 1px solid var(--line);
+      border-top: 1px solid var(--line);
     }
 
     .nav-inner {
@@ -115,7 +117,15 @@
       border-radius: 10px;
       background: linear-gradient(135deg, var(--red-soft), rgba(255,255,255,0.03));
       box-shadow: 0 0 18px rgba(255, 0, 0, 0.22);
-      color: var(--red);
+      overflow: hidden;
+      padding: 5px;
+    }
+
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(255, 30, 30, .28));
     }
 
     .floating-lang {
@@ -469,8 +479,9 @@
 
     .device-body {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       padding: 20px;
+      overflow: hidden;
     }
 
     .device-name {
@@ -487,6 +498,8 @@
     }
 
     .device-specs {
+      position: relative;
+      z-index: 2;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 9px;
@@ -834,6 +847,42 @@
       78%, 100% { transform: translateX(110%); }
     }
 
+
+    @media (min-width: 1181px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(420px, 500px);
+        align-items: start;
+      }
+
+      .side-stack {
+        justify-self: end;
+        width: min(500px, 100%);
+      }
+
+      .device-card {
+        overflow: hidden;
+      }
+
+      .tech-banner {
+        margin-top: 18px;
+      }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .side-stack {
+        order: -1;
+        width: 100%;
+      }
+
+      .tech-banner {
+        margin-top: 18px;
+      }
+    }
+
     @media (min-width: 1440px) {
       .shell {
         width: min(1360px, calc(100% - 72px));
@@ -849,7 +898,7 @@
       }
     }
 
-    @media (max-width: 1040px) {
+    @media (max-width: 1180px) {
       .hero-grid,
       .main-project {
         grid-template-columns: 1fr;
@@ -945,14 +994,372 @@
         transition-duration: 0.001ms !important;
       }
     }
+  
+
+    body.intro-lock {
+      overflow: hidden;
+    }
+
+    .intro {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100svh;
+      height: 100dvh;
+      min-height: 100vh;
+      min-height: 100svh;
+      min-height: 100dvh;
+      z-index: 999;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: #000;
+      transition: transform 900ms cubic-bezier(.75,0,.18,1), opacity 900ms ease, visibility 900ms ease;
+    }
+
+    .intro.is-hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .intro-video {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      min-width: 100vw;
+      min-height: 100vh;
+      min-height: 100dvh;
+      object-fit: cover;
+      object-position: center center;
+      filter: saturate(1.18) contrast(1.08) brightness(0.72);
+      transform: translate(-50%, -50%) scale(1.22);
+      transform-origin: center;
+    }
+
+    @media (orientation: portrait) {
+      .intro-video {
+        transform: translate(-50%, -50%) scale(1.18);
+      }
+    }
+
+    @media (min-aspect-ratio: 16/9) {
+      .intro-video {
+        transform: translate(-50%, -50%) scale(1.28);
+      }
+    }
+
+    .intro::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 52%, transparent 0 24%, rgba(0,0,0,.16) 42%, rgba(0,0,0,.86) 100%),
+        linear-gradient(180deg, rgba(0,0,0,.36), rgba(0,0,0,.10) 42%, rgba(0,0,0,.82));
+      z-index: 1;
+    }
+
+    .intro::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(transparent 0 94%, rgba(255,0,0,.10) 96% 100%);
+      background-size: 100% 6px;
+      opacity: .26;
+      mix-blend-mode: screen;
+    }
+
+    .intro-content {
+      position: relative;
+      z-index: 3;
+      width: min(760px, calc(100% - 38px));
+      text-align: center;
+      opacity: 0;
+      transform: translateY(18px) scale(.985);
+      animation: introContentIn 900ms ease 260ms forwards;
+    }
+
+    .intro-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 34px;
+      margin-bottom: 20px;
+      padding: 0 13px;
+      border: 1px solid var(--red-border);
+      border-radius: 999px;
+      color: #ffd5d5;
+      background: rgba(255, 0, 0, .13);
+      backdrop-filter: blur(14px);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      box-shadow: 0 0 26px rgba(255,0,0,.18);
+    }
+
+    .intro-title {
+      font-size: clamp(46px, 9vw, 128px);
+      line-height: .82;
+      letter-spacing: -.07em;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-shadow: 0 0 36px rgba(255, 0, 0, .34);
+    }
+
+    .intro-title span {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,.62);
+      text-shadow: none;
+    }
+
+    .intro-sub {
+      max-width: 560px;
+      margin: 22px auto 0;
+      color: #dccaca;
+      line-height: 1.55;
+      font-size: clamp(14px, 1.4vw, 17px);
+    }
+
+    .intro-loader {
+      position: relative;
+      width: min(320px, 70vw);
+      height: 3px;
+      margin: 30px auto 0;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+    }
+
+    .intro-loader span {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 100%;
+      background: linear-gradient(90deg, var(--red), #ff8383, var(--red));
+      transform-origin: left;
+      transform: scaleX(0);
+      animation: introLoad 4.5s linear forwards;
+      box-shadow: 0 0 22px rgba(255,0,0,.50);
+    }
+
+    .skip-intro {
+      position: absolute;
+      top: calc(14px + env(safe-area-inset-top));
+      right: calc(14px + env(safe-area-inset-right));
+      z-index: 4;
+      min-height: 34px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      padding: 0 13px;
+      color: #fff;
+      background: rgba(0,0,0,.42);
+      backdrop-filter: blur(14px);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      cursor: pointer;
+      transition: 180ms ease;
+    }
+
+    .skip-intro:hover {
+      border-color: var(--red-border);
+      background: rgba(255,0,0,.16);
+    }
+
+    @keyframes introContentIn {
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes introLoad {
+      to { transform: scaleX(1); }
+    }
+
+
+    .device-card {
+      padding: 0;
+      overflow: hidden;
+      border-color: rgba(255, 30, 30, 0.32);
+      background:
+        radial-gradient(circle at 76% 4%, rgba(255,0,0,0.25), transparent 30%),
+        linear-gradient(135deg, rgba(255, 0, 0, 0.13), rgba(255,255,255,0.025)),
+        rgba(12, 3, 3, 0.82);
+    }
+
+    .tech-banner {
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      margin: 18px 0 0;
+      padding: 0;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    .tech-banner img {
+      width: 100%;
+      display: block;
+      border-radius: 22px;
+      border: 0;
+      box-shadow: 0 20px 40px rgba(0,0,0,.42), 0 0 24px rgba(255,0,0,.14);
+      transform: translateY(0);
+      object-fit: cover;
+    }
+
+    .device-image {
+      position: relative;
+      min-height: 330px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 52% 35%, rgba(255,255,255,0.12), transparent 24%),
+        radial-gradient(circle at 50% 58%, rgba(255,0,0,0.26), transparent 42%),
+        linear-gradient(180deg, #080101 0%, #120303 58%, #060000 100%);
+    }
+
+    .device-image img {
+      width: auto;
+      height: min(390px, 48vh);
+      max-width: 56%;
+      object-fit: contain;
+      object-position: center;
+      opacity: 1;
+      filter: drop-shadow(0 0 42px rgba(255,0,0,.26)) drop-shadow(0 22px 34px rgba(0,0,0,.55));
+      transform: translateY(12px) rotate(-1.5deg);
+    }
+
+    .device-image::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(255, 30, 30, .16);
+      border-radius: 24px;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 26px 26px;
+      mask-image: radial-gradient(circle at center, #000 0 62%, transparent 76%);
+      pointer-events: none;
+    }
+
+    .device-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, transparent 0%, rgba(5,0,0,0.10) 52%, rgba(5,0,0,0.88) 100%),
+        linear-gradient(90deg, rgba(5,0,0,0.52), transparent 55%);
+      pointer-events: none;
+    }
+
+    .device-label {
+      position: absolute;
+      left: 18px;
+      bottom: 16px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffe2e2;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .cpu-display {
+      margin-top: 18px;
+      padding: 17px;
+      border: 1px solid rgba(255, 30, 30, .34);
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(255,0,0,.22), transparent 34%),
+        rgba(0,0,0,.24);
+      box-shadow: inset 0 0 32px rgba(255,0,0,.08);
+    }
+
+    .cpu-display small {
+      display: block;
+      color: var(--red);
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .cpu-display b {
+      display: block;
+      font-size: 24px;
+      line-height: 1.05;
+      letter-spacing: -.04em;
+    }
+
+    .cpu-display span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.42;
+      font-size: 13px;
+    }
+
+    .cpu-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 122px;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .cpu-chip {
+      width: 122px;
+      height: 82px;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 30, 30, .26);
+      box-shadow: 0 0 26px rgba(255,0,0,.15);
+      justify-self: end;
+      background: #0d0303;
+    }
+
+    @media (max-width: 760px) {
+      .tech-banner {
+        margin: -26px -3px 0;
+        padding: 0;
+      }
+      .tech-banner img {
+        border-radius: 20px;
+        transform: translateY(0);
+      }
+      .device-image { min-height: 270px; }
+      .device-image img { height: min(315px, 42vh); max-width: 72%; }
+    }
+
   </style>
 </head>
-<body>
+<body class="intro-lock">
+
+  <div class="intro" id="intro" aria-label="Intro animation">
+    <video id="introVideo" class="intro-video" autoplay muted playsinline preload="auto" poster="assets/img/redmagic-poster.jpg"></video>
+    <button class="skip-intro" id="skipIntro" type="button">SKIP</button>
+    <div class="intro-content">
+      <div class="intro-tag" data-i18n="introTag">RED MAGIC TEST DEVICE</div>
+      <div class="intro-title">GAME<br><span>OVER</span><br>OP</div>
+      <p class="intro-sub" data-i18n="introSub">Android root tools, network control and DPI bypass projects.</p>
+      <div class="intro-loader"><span></span></div>
+    </div>
+  </div>
+
   <div class="page">
     <nav class="nav">
       <div class="shell nav-inner">
         <a class="brand" href="#top" aria-label="GAME-OVER-op">
-          <span class="brand-mark">⌁</span>
+          <span class="brand-mark"><img src="assets/img/rm-logo.png" alt="RedMagic logo" /></span>
           <span>GAME-OVER-op</span>
         </a>
       </div>
@@ -1007,21 +1414,23 @@
 
             <aside class="device-card reveal" id="device" aria-label="Development device card">
               <div class="device-image">
-                <img src="https://cf-images.us-east-1.prod.boltdns.net/v1/static/1414329538001/450d9315-37ed-4166-9439-749f39e8378d/09e969d7-3a5d-4dfb-b6a2-71443a2048a4/1280x720/match/image.jpg" alt="Snapdragon 8 Gen 3 chip visual from Qualcomm" loading="lazy" />
+                <img src="assets/img/phone-user.webp" alt="Red Magic 9 Pro" loading="lazy" />
                 <div class="device-label"><span class="pulse"></span><span data-i18n="deviceLabel">Project device</span></div>
               </div>
               <div class="device-body">
                 <h2 class="device-name">Red Magic 9 Pro</h2>
-                <p class="device-sub" data-i18n="deviceSub">Рабочее устройство для сборки, проверки и тестов проектов. Конфигурация: 16 / 512, LineageOS.</p>
+                <p class="device-sub" data-i18n="deviceSub">Основное устройство для сборки, проверки и тестов Android root-проектов. Конфигурация: 16 / 512, LineageOS.</p>
                 <div class="device-specs">
-                  <div class="device-spec"><b>Snapdragon 8 Gen 3</b><span>Qualcomm SoC</span></div>
+                  <div class="device-spec"><b>Snapdragon 8 Gen 3</b><span data-i18n="cpuLabel">ЦП</span></div>
                   <div class="device-spec"><b>Adreno 750</b><span data-i18n="deviceGpu">графика</span></div>
                   <div class="device-spec"><b>16 GB LPDDR5X</b><span data-i18n="deviceRam">оперативная память</span></div>
                   <div class="device-spec"><b>512 GB UFS 4.0</b><span data-i18n="deviceStorage">накопитель</span></div>
                   <div class="device-spec"><b>LineageOS</b><span data-i18n="deviceFirmware">прошивка</span></div>
-                  <div class="device-spec"><b>Android root</b><span data-i18n="deviceRoot">тестовая среда</span></div>
+                  <div class="device-spec"><b>Kryo up to 3.3 GHz</b><span data-i18n="cpuSubShort">архитектура</span></div>
                 </div>
-                <a class="image-source" href="https://www.qualcomm.com/smartphones/products/8-series/snapdragon-8-gen-3-mobile-platform" target="_blank" rel="noopener" data-i18n="qcomSource">Изображение чипа: Qualcomm</a>
+                <div class="tech-banner">
+                  <img src="assets/img/tech-banner.webp" alt="Snapdragon 8 Gen 3, LPDDR5X and UFS 4.0" loading="lazy" />
+                </div>
               </div>
             </aside>
           </div>
@@ -1102,6 +1511,10 @@
 
     const translations = {
       ru: {
+        introTag: "RED MAGIC TEST DEVICE",
+        introSub: "Android root tools, network control and DPI bypass projects.",
+        introTag: "RED MAGIC TEST DEVICE",
+        introSub: "Android root tools, network control and DPI bypass projects.",
         eyebrow: "Android root tooling",
         lead: "Инструменты для Android, root-среды, сетевой маршрутизации, защиты и системной оптимизации.",
         githubBtn: "GitHub профиль",
@@ -1115,7 +1528,10 @@
         followersLabel: "подписчиков",
         starsLabel: "звёзд",
         deviceLabel: "Project device",
-        deviceSub: "Рабочее устройство для сборки, проверки и тестов проектов. Конфигурация: 16 / 512, LineageOS.",
+        deviceSub: "Основное устройство для сборки, проверки и тестов Android root-проектов. Конфигурация: 16 / 512, LineageOS.",
+        cpuLabel: "ЦП",
+        cpuSub: "Kryo CPU, частота до 3.3 GHz. Основная платформа для тестов ZDT-D и других Android-проектов.",
+        cpuSubShort: "архитектура",
         deviceRam: "оперативная память",
         deviceStorage: "накопитель",
         deviceGpu: "графика",
@@ -1159,7 +1575,10 @@
         followersLabel: "followers",
         starsLabel: "stars",
         deviceLabel: "Project device",
-        deviceSub: "The device used to build, check and test projects. Configuration: 16 / 512, LineageOS.",
+        deviceSub: "The main device used to build, check and test Android root projects. Configuration: 16 / 512, LineageOS.",
+        cpuLabel: "CPU",
+        cpuSub: "Kryo CPU, up to 3.3 GHz. Main testing platform for ZDT-D and other Android projects.",
+        cpuSubShort: "architecture",
         deviceRam: "memory",
         deviceStorage: "storage",
         deviceGpu: "graphics",
@@ -1421,10 +1840,42 @@
       items.forEach((item) => observer.observe(item));
     }
 
+
+
+    function setupIntro() {
+      const intro = document.getElementById("intro");
+      const video = document.getElementById("introVideo");
+      const skip = document.getElementById("skipIntro");
+      if (!intro || !video || !skip) return;
+
+      const mobile = window.matchMedia("(max-width: 720px), (orientation: portrait)").matches;
+      video.src = mobile ? "assets/media/redmagic-intro-mobile.mp4" : "assets/media/redmagic-intro-desktop.mp4";
+      video.play().catch(() => {});
+
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        intro.classList.add("is-hidden");
+        document.body.classList.remove("intro-lock");
+        window.setTimeout(() => {
+          video.pause();
+          video.removeAttribute("src");
+          video.load();
+          intro.remove();
+        }, 950);
+      };
+
+      skip.addEventListener("click", finish);
+      video.addEventListener("ended", () => window.setTimeout(finish, 220));
+      window.setTimeout(finish, 5200);
+    }
+
     document.getElementById("langToggle").addEventListener("click", () => {
       applyLanguage(currentLang === "ru" ? "en" : "ru");
     });
 
+    setupIntro();
     applyLanguage(currentLang);
     loadGitHubData();
     observeReveal();
